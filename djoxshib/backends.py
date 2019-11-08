@@ -13,7 +13,7 @@ class ShibbolethBackend(RemoteUserBackend):
     ]
 
     def authenticate(self, request, remote_user):
-        user = super().authenticate(request, remote_user)
+        user = super(RemoteUserBackend, self).authenticate(request, remote_user)
         if user:
             self.update_user_data(request, user)
 
