@@ -13,7 +13,12 @@ class ShibbolethBackend(RemoteUserBackend):
     ]
 
     def authenticate(self, request, remote_user):
-        user = super(ShibbolethBackend, self).authenticate(request, remote_user)
+        suffix = '@ox.ac.uk'
+        cleaned_username = remote_user
+        if cleaned_username.endswith(suffix):
+            cleaned_username = cleaned_username[:-len(suffix)]
+
+        user = super(ShibbolethBackend, self).authenticate(request, cleaned_username)
         if user:
             self.update_user_data(request, user)
 
