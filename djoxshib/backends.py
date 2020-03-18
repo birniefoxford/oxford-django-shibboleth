@@ -35,7 +35,7 @@ class ShibbolethBackend(RemoteUserBackend):
         for orgunit_dn in request.META.get('orgunit-dn', '').split(';'):
             match = re.match('^oakUnitCode=(.*),ou=units,dc=oak,dc=ox,dc=ac,dc=uk$', orgunit_dn)
             if match:
-                groups.add('affilition:{}'.format(match.group(1)))
+                groups.add('affiliation:{}'.format(match.group(1)))
 
         for oak_itss_for in request.META.get('oakITSSFor', '').split(';'):
             match = re.match('^oakGN=ITSS,oakUnitCode=(.*),ou=units,dc=oak,dc=ox,dc=ac,dc=uk$', oak_itss_for)
