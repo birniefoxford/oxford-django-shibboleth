@@ -9,7 +9,7 @@ class ShibbolethBackend(RemoteUserBackend):
     attribute_map = [
         ('givenName', 'first_name'),
         ('sn', 'last_name'),
-        ('mail', 'email'),
+#        ('mail', 'email'),
     ]
 
     def authenticate(self, request, remote_user):
@@ -33,6 +33,10 @@ class ShibbolethBackend(RemoteUserBackend):
         user.save()
 
         groups = set()
+
+        # deal with email conditionally as some depts such as Maison Francaise don't provide it on login
+        if 'mail' in request.META:
+            setattr(user, 'email', request.META['mail'])
 
         if 'oakStatus' in request.META:
             groups.add('status:{}'.format(request.META['oakStatus']))
