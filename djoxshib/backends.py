@@ -30,13 +30,14 @@ class ShibbolethBackend(RemoteUserBackend):
                 setattr(user, user_attribute, request.META[shib_attribute])
             else:
                 setattr(user, user_attribute, user._meta.fields_map[user_attribute].default)
-        user.save()
-
-        groups = set()
 
         # deal with email conditionally as some depts such as Maison Francaise don't provide it on login
         if 'mail' in request.META:
             setattr(user, 'email', request.META['mail'])
+            
+        user.save()
+
+        groups = set()
 
         if 'oakStatus' in request.META:
             groups.add('status:{}'.format(request.META['oakStatus']))
